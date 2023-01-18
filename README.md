@@ -1,0 +1,1 @@
+This repository is the source for my own [permashortlink](https://indieweb.org/permashortlink) service, hosted on https://o.audard.net/.

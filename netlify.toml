@@ -1,0 +1,13 @@
+[build]
+  publish = "site"
+
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 404
+  
+[[redirects]]
+  from = "/:short"
+  to = "/.netlify/functions/redirect/:short"
+  status = 302
+  force = true
