@@ -1,5 +1,5 @@
 const Parser = require('rss-parser');
-const { expand } = require('../../lib/url-courte.js')
+const { expand } = require('@dhar/url-courte')
 
 exports.handler = async function (event, context) {
 	// expanding: https://o.audard.net/a202301081
