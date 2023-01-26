@@ -1,6 +1,9 @@
 [build]
   publish = "site"
 
+[functions]
+  node_bundler = "esbuild"
+
 [[redirects]]
   from = "/favicon.ico"
   to = "/favicon.ico"

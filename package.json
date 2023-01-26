@@ -9,8 +9,8 @@
   "author": "Olivier Audard <olivier@audard.net>",
   "license": "MIT",
   "dependencies": {
-    "@dhar/url-courte": "^1.0.0",
-    "rss-parser": "^3.12.0",
+    "@dhar/url-courte": "^2.0.0",
+    "got": "^12.5.3",
     "whistler": "^1.2.0"
   }
 }

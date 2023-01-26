@@ -1,9 +1,8 @@
-const Parser = require('rss-parser');
-const { expand } = require('@dhar/url-courte')
+import got from 'got'
+import { expand } from '@dhar/url-courte'
 
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
 	// expanding: https://o.audard.net/a202301081
-
 
 	let redirectUrl = new URL('https://olivier.audard.net')
 	const path = event.path.replace(/\/\.netlify\/functions\/[^/]+/, '')
@@ -17,13 +16,27 @@ exports.handler = async function (event, context) {
 		const [, expandedPathname, ordinal] = expandedFragment.match(/^(.*)\/([0-9]+)$/)
 		redirectUrl.pathname = expandedPathname
 
-		const parser = new Parser();
-		const feed = await parser.parseURL('https://olivier.audard.net/atom.xml');
+		try {
+			const feed = await got('https://olivier.audard.net/feed.json').json();
+			
+			const item = feed.items.filter((item) => 
+				item.url.startsWith(redirectUrl.href)
+			)[ordinal-1]
 
-		const item = feed.items.filter((item) => {
-			return item.link.startsWith(redirectUrl.href)
-		})[ordinal-1]
-		redirectUrl = new URL(item.link)
+			if (item === undefined) {
+				throw `Could not find ${ordinal}th items on ${redirectUrl.pathname}`
+			}
+			redirectUrl = new URL(item.url)
+		} catch (err) {
+			console.error(`Failed to expand ${path}`)
+			if (err.response) {
+				console.error('>>>', err.response.statusCode, err.response.requestUrl.href)
+			}
+			else {
+				console.error('>>>', err)
+			}
+			redirectUrl.pathname = ''
+		}
 	}
 
 	redirectUrl.searchParams.append('utm_campaign', 'short')
